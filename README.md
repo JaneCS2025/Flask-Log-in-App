@@ -61,7 +61,7 @@ This project is a simple login web application built with Flask. It demonstrates
 Feel free to fork and extend this project!
 Flask App Screenshot:
 
-4 different routs in the app:
+4 different routs in the app: </br>
 http://127.0.0.1:5000 </br>
 http://127.0.0.1:5000/login  </br>
 http://127.0.0.1:5000/register  </br>
