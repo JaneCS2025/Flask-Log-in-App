@@ -62,10 +62,11 @@ Feel free to fork and extend this project!
 Flask App Screenshot:
 
 4 different routs in the app:
-http://127.0.0.1:5000
-http://127.0.0.1:5000/login
-http://127.0.0.1:5000/register
-http://127.0.0.1:5000/logout
+http://127.0.0.1:5000 </br>
+http://127.0.0.1:5000/login  </br>
+http://127.0.0.1:5000/register  </br>
+http://127.0.0.1:5000/logout  </br>
 
+ </br>
 <img width="602" height="244" alt="Screenshot 2026-02-11 at 11 14 56 AM" src="https://github.com/user-attachments/assets/b0949c4c-c36b-45bd-977a-5d5208de383c" />
 
