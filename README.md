@@ -21,10 +21,10 @@ This project is a simple login web application built with Flask. It demonstrates
    ```
 
 2. **Create a virtual environment (optional but recommended)**
-
+   For windows command: 
    ```sh
    python3 -m venv venv
-   source venv/bin/activate
+   venv\Scripts\activate
    ```
 
 3. **Install dependencies**
