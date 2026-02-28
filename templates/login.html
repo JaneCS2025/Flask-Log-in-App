@@ -14,5 +14,16 @@
       <input type="text" name="password" required />
       <button type="submit">Login</button>
    </form>
+    {% if error %}
+    <div id="error-message" class="error" style="color: red;">{{ error }}</div>
+    <script>
+       setTimeout(function() {
+          var errorDiv = document.getElementById('error-message');
+          if (errorDiv) {
+             errorDiv.style.display = 'none';
+          }
+       }, 5000);
+    </script>
+    {% endif %}
 </body>
 </html>

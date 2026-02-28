@@ -4,6 +4,7 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 ###pip install flask_sqlalchemy, flask_login
+##https://sqlitebrowser.org/dl/
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
@@ -17,18 +18,18 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 
 #Insert data into db
-# conn = sqlite3.connect('instance/db.sqlite')
-# cursor = conn.cursor()
+conn = sqlite3.connect('instance/db.sqlite')
+cursor = conn.cursor()
 
-# users = [
-#     ('Jane', generate_password_hash('123')),
-#     ('Mike', generate_password_hash('456')),
-#     ('alice', generate_password_hash('123')),
-#     ('bob', generate_password_hash('123'))
-# ]
-# cursor.executemany('INSERT OR IGNORE INTO user (username, password) VALUES (?, ?)', users)
-# conn.commit()
-# conn.close()
+users = [
+    ('Jane', generate_password_hash('123')),
+    ('Mike', generate_password_hash('456')),
+    ('alice', generate_password_hash('123')),
+    ('bob', generate_password_hash('123'))
+]
+cursor.executemany('INSERT OR IGNORE INTO user (username, password) VALUES (?, ?)', users)
+conn.commit()
+conn.close()
 
 #create User model
 class User(UserMixin, db.Model):
@@ -49,6 +50,10 @@ def load_user(user_id):
 def home():
   return render_template('index.html')
 
+@app.route('/users')
+def users():
+    all_users = User.query.all()
+    return render_template('users.html', users=all_users)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -60,7 +65,7 @@ def login():
     if user and check_password_hash(user.password, password):
     # if user and check_password_hash(user.password, password):
       login_user(user)
-      return render_template('index.html')
+      return render_template('index.html', user=current_user)
     else:
       return render_template('login.html', error = "Invalid username or password")
     

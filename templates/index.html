@@ -6,7 +6,9 @@
   <title>Home Page</title>
 </head>
 <body>
-  <h3>Welcome to Home Page!</h3>
+  {% if user %}
+  <h3>Welcome to Home Page, {{user.username}} !</h3>
+  {% endif %}
    <a href="/logout">Logout</a>
 </body>
 </html>
