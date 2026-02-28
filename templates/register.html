@@ -6,6 +6,25 @@
   <title>Register</title>
 </head>
 <body>
-    <h3>Register</h3>
+    <h3>Register new user</h3>
+    <form action="/register" method="post">
+      <label for="username">Username:</label>
+      <div>
+        <input type="text" name="username" required />
+      </div>
+       <label for="password">Password:</label>
+      <div>
+        <input type="text" name="password" required />
+      </div>
+      <label for="email">Email:</label>
+      <div>
+        <input type="email" name="email" />
+      </div>
+      <label for="Tel">Tel:</label>
+      <div>
+        <input type="tel" name="tel" />
+      </div>
+      <button type="submit">Register</button>
+   </form>
 </body>
 </html>

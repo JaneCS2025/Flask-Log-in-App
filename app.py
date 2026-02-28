@@ -22,12 +22,10 @@ conn = sqlite3.connect('instance/db.sqlite')
 cursor = conn.cursor()
 
 users = [
-    ('Jane', generate_password_hash('123')),
-    ('Mike', generate_password_hash('456')),
-    ('alice', generate_password_hash('123')),
-    ('bob', generate_password_hash('123'))
+    ('alice', generate_password_hash('123'), 'alice@gmail.com', '7783098978'),
+    ('bob', generate_password_hash('123'), 'bob@gmail.com', '7789086897')
 ]
-cursor.executemany('INSERT OR IGNORE INTO user (username, password) VALUES (?, ?)', users)
+cursor.executemany('INSERT OR IGNORE INTO user (username, password, email, tel) VALUES (?, ?, ?, ?)', users)
 conn.commit()
 conn.close()
 
@@ -36,6 +34,8 @@ class User(UserMixin, db.Model):
   id = db.Column(db.Integer, primary_key = True)
   username = db.Column(db.String(250), unique = True, nullable = False)
   password = db.Column(db.String(250), nullable = False)
+  email = db.Column(db.String(250), nullable = True)
+  tel = db.Column(db.String(250), nullable = True)
 
 # Create database
 with app.app_context():
@@ -72,8 +72,29 @@ def login():
   return render_template("login.html")      
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+  if request.method == 'POST':
+    username = request.form.get('username')
+    password = request.form.get('password')
+    email = request.form.get('email')
+    tel = request.form.get('tel')
+
+    # Check if user already exists
+    existing_user = User.query.filter_by(username=username).first()
+    if existing_user:
+      return render_template('register.html', error='Username already exists')
+
+    # Hash the password
+    hashed_password = generate_password_hash(password)
+
+    # Create new user and add to db
+    new_user = User(username=username, password=hashed_password, email=email, tel=tel)
+    db.session.add(new_user)
+    db.session.commit()
+
+    return redirect(url_for('login'))
+
   return render_template('register.html')
 
 
