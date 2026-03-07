@@ -24,7 +24,8 @@ This project is a simple login web application built with Flask. It demonstrates
    For windows command: 
    ```sh
    python3 -m venv venv
-   venv\Scripts\activate
+   venv\Scripts\activate (windows)
+   source venv/bin/activate
    ```
 
 3. **Install dependencies**
