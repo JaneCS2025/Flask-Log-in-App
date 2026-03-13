@@ -84,10 +84,6 @@ If you see errors about missing API key, ensure:
 - `GEMINI_API_KEY` is set correctly without `export` keyword
 - The format is: `KEY=VALUE` (no spaces around `=`)
 
-### Step 5: Install Gen AI Package:
-
--`pip install google-generativeai python-dotenv`
-
 ## How Gen AI Works in This App
 
 1. **User Registration**: When a user registers, they select a hobby from the dropdown
