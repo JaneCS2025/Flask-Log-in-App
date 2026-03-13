@@ -1,4 +1,4 @@
-# Flask Login App
+# Flask Login App + Gen AI welcome page
 
 This project is a simple login web application built with Flask. It demonstrates user registration, login, and password hashing using modern Python libraries. It also includes Gen AI integration to provide personalized welcome messages based on user information.
 
