@@ -38,6 +38,7 @@ class User(UserMixin, db.Model):
   email = db.Column(db.String(250), nullable = True)
   tel = db.Column(db.String(250), nullable = True)
   hobby = db.Column(db.String(250), nullable = True)
+  welcome_message = db.Column(db.String(250), nullable = True)
 
 # Create database
 with app.app_context():
@@ -75,9 +76,14 @@ def login():
         "hobby": user.hobby
       }
       
+      #Add cache for the same message: 
+      # if user.welcome_message:
+      #   ai_message = user.welcome_message
+      
+      # else:
       ai_message = generate_welcome_message(user_data)
-
-      print('ai message', ai_message)
+      user.welcome_message = ai_message
+      db.session.commit()
 
       login_user(user)
       return render_template('index.html', user=current_user, ai_message=ai_message)

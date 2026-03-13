@@ -21,12 +21,12 @@ def generate_welcome_message(user):
     Username: {user['username']}
     Hobby: {user['hobby']}
 
-    Keep it short and friendly and no more than 20 words.
+    Keep it short and friendly and at least 50 words.
     """
 
     response = client.models.generate_content(
         model="gemini-2.5-flash",
         contents=prompt
     )
-    print('response', response)
+    #print('response', response)
     return response.text
