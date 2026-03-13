@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -83,7 +83,8 @@ def register():
     # Check if user already exists
     existing_user = User.query.filter_by(username=username).first()
     if existing_user:
-      return render_template('register.html', error='Username already exists')
+      flash('Username already exists', 'error')
+      return render_template('register.html')
 
     # Hash the password
     hashed_password = generate_password_hash(password)
@@ -93,7 +94,8 @@ def register():
     db.session.add(new_user)
     db.session.commit()
 
-    return redirect(url_for('login'))
+    flash('Registration successful! Please log in.', 'success')
+    return render_template('register.html')
 
   return render_template('register.html')
 

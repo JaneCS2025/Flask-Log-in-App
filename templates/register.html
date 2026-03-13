@@ -26,5 +26,30 @@
       </div>
       <button type="submit">Register</button>
    </form>
+   
+   <style>
+      .success { color: green; }
+      .error { color: red; }
+   </style>
+   
+   {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+         {% for category, message in messages %}
+            <div id="flash-message" class="{{ category }}" style="padding: 10px; margin-bottom: 10px;">{{ message }}</div>
+            <script>
+               setTimeout(function() {
+                  var flashDiv = document.getElementById('flash-message');
+                  if (flashDiv) {
+                     flashDiv.style.display = 'none';
+                  }
+                  var category = "{{ category }}";
+                  if (category == 'success') {
+                     window.location.href = '/login';
+                  }
+               }, 1000);
+            </script>
+         {% endfor %}
+      {% endif %}
+   {% endwith %}
 </body>
 </html>
