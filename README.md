@@ -86,8 +86,7 @@ If you see errors about missing API key, ensure:
 
 ### Step 5: Install Gen AI Package:
 
--`pip install google-generativeai` 
--`pip install python-dotenv`
+-`pip install google-generativeai python-dotenv`
 
 ## How Gen AI Works in This App
 
