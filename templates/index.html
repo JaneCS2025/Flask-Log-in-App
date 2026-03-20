@@ -8,7 +8,13 @@
 <body>
   {% if user %}
   <h3>Welcome to Home Page, {{user.username}} !</h3>
-    {% if ai_message %}   
+    {% if is_birthday %}
+    <div style="background-color: #FFD700; padding: 20px; margin: 20px 0; border-radius: 10px; text-align: center;">
+      <h2>🎉 Happy Birthday, {{user.username}}! 🎉</h2>
+      <p>{{ birthday_wishes }}</p>
+    </div>
+    {% endif %}
+    {% if ai_message and not is_birthday %}   
     <div>{{ai_message}}</div>
     {% endif %}
   <a href="/logout">Logout</a>

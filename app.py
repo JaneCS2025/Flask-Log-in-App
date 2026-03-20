@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, url_for, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from ai_service import generate_welcome_message
+from ai_service import generate_welcome_message, generate_birthday_wishes
+from datetime import datetime
 import sqlite3
 ###pip install flask_sqlalchemy, flask_login
 ##https://sqlitebrowser.org/dl/
@@ -22,13 +23,13 @@ login_manager.login_view = "login"
 conn = sqlite3.connect('instance/db.sqlite')
 cursor = conn.cursor()
 
-users = [
-    ('alice', generate_password_hash('123'), 'alice@gmail.com', '7783098978', 'movies'),
-    ('bob', generate_password_hash('123'), 'bob@gmail.com', '7789086897', 'books')
-]
-cursor.executemany('INSERT OR IGNORE INTO user (username, password, email, tel, hobby) VALUES (?, ?, ?, ?, ?)', users)
-conn.commit()
-conn.close()
+# users = [
+#     ('alice', generate_password_hash('123'), 'alice@gmail.com', '7783098978', 'movies'),
+#     ('bob', generate_password_hash('123'), 'bob@gmail.com', '7789086897', 'books')
+# ]
+# cursor.executemany('INSERT OR IGNORE INTO user (username, password, email, tel, hobby) VALUES (?, ?, ?, ?, ?)', users)
+# conn.commit()
+# conn.close()
 
 #create User model
 class User(UserMixin, db.Model):
@@ -39,6 +40,7 @@ class User(UserMixin, db.Model):
   tel = db.Column(db.String(250), nullable = True)
   hobby = db.Column(db.String(250), nullable = True)
   welcome_message = db.Column(db.String(250), nullable = True)
+  birthday = db.Column(db.String(5), nullable = True)  # Format: MM-DD
 
 # Create database
 with app.app_context():
@@ -48,6 +50,14 @@ with app.app_context():
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+def is_birthday_today(birthday_str):
+  """Check if birthday matches today's date (MM-DD format)"""
+  if not birthday_str:
+    return False
+  today = datetime.now()
+  today_mmdd = today.strftime("%m/%d")
+  return birthday_str == today_mmdd
 
 @app.route('/')
 def home():
@@ -86,7 +96,16 @@ def login():
       db.session.commit()
 
       login_user(user)
-      return render_template('index.html', user=current_user, ai_message=ai_message)
+      
+      # Check if today is user's birthday
+      is_birthday = is_birthday_today(user.birthday)
+      birthday_wishes = ""
+      
+      # Generate personalized birthday wishes if it's their birthday
+      if is_birthday:
+        birthday_wishes = generate_birthday_wishes(user_data)
+      
+      return render_template('index.html', user=current_user, ai_message=ai_message, is_birthday=is_birthday, birthday_wishes=birthday_wishes)
     else:
       return render_template('login.html', error = "Invalid username or password")
     
@@ -101,6 +120,7 @@ def register():
     email = request.form.get('email')
     tel = request.form.get('tel')
     hobby = request.form.get('hobby')
+    birthday = request.form.get('birthday')
 
     # Check if user already exists
     existing_user = User.query.filter_by(username=username).first()
@@ -112,7 +132,7 @@ def register():
     hashed_password = generate_password_hash(password)
 
     # Create new user and add to db
-    new_user = User(username=username, password=hashed_password, email=email, tel=tel, hobby=hobby)
+    new_user = User(username=username, password=hashed_password, email=email, tel=tel, hobby=hobby, birthday=birthday)
     db.session.add(new_user)
     db.session.commit()
 

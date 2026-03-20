@@ -30,3 +30,30 @@ def generate_welcome_message(user):
     )
     #print('response', response)
     return response.text
+
+
+def generate_birthday_wishes(user):
+    """Generate personalized birthday wishes based on user information"""
+    
+    prompt = f"""
+    Create a warm, personalized, and heartfelt birthday wish message.
+
+    Username: {user['username']}
+    Hobby: {user['hobby']}
+    
+    The message should:
+    - Be warm and celebratory
+    - Mention their hobby to make it personal
+    - Include positive wishes for their future
+    - Be between 2-3 sentences
+    - Use celebratory emojis
+    
+    Just write the birthday message, at least 50 words.
+    """
+
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
+    
+    return response.text
